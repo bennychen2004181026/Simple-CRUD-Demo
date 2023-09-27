@@ -3,6 +3,7 @@ const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 8000;
 const connectDB = require("./db");
+const routes = require("./routes/route");
 connectDB();
 
 app.use(
@@ -12,6 +13,8 @@ app.use(
   })
 );
 app.use(express.json());
+//use the routes
+app.use("/api", routes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
