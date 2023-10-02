@@ -32,4 +32,21 @@ router.get("/courses", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+// update a course by ID
+router.put("/courses/:id", async (req, res) => {
+  try {
+    const course = await Course.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    if (!course) {
+      return res.status(404).json({ error: "Course not found" });
+    }
+    res.status(200).json(course);
+  } catch (error) {
+    console.error("Error updating course:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+
+})
 module.exports = router;
