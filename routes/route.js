@@ -47,6 +47,18 @@ router.put("/courses/:id", async (req, res) => {
     console.error("Error updating course:", error);
     res.status(500).json({ error: "Internal server error" });
   }
+});
 
-})
+// delete a course by ID
+router.delete("/courses/:id", async (req, res) => {
+  try {
+    const course = await Course.findByIdAndDelete(req.params.id);
+    if (!course) {
+      return res.status(404).json({ error: "Course not found" });
+    }
+    res.json({message:"Course deleted!"});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 module.exports = router;
