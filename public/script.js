@@ -1,9 +1,8 @@
-
 document.addEventListener("DOMContentLoaded", () => {
   const addCourseForm = document.getElementById("add-course-form");
   const courseList = document.getElementById("course-list");
   const errorContainer = document.getElementById("error-container");
-  const url ="http://localhost:8000/api/courses/"
+  const url = "http://localhost:8000/api/courses/";
 
   const fetchCourses = async () => {
     try {
@@ -45,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const responseData = await response.json();
       if (responseData.errors) {
         errorContainer.innerHTML = ""; //clear previous errors
-        console.log(responseData.errors)
+        console.log(responseData.errors);
         for (const field in responseData.errors) {
           const errorText = responseData.errors[field];
           const errorElement = document.createElement("p");
@@ -53,8 +52,26 @@ document.addEventListener("DOMContentLoaded", () => {
           errorContainer.appendChild(errorElement);
         }
       }
-    } catch (error) {
-      // console.error("Error adding course", response);
+    } catch (error) {}
+  });
+
+  courseList.addEventListener("click", async (event) => {
+    if (event.target.classList.contains("delete-button")) {
+      const courseId = event.target.dataset.courseId;
+      if (confirm("Are you sure you want to delete this course?")) {
+        try {
+          const response = await fetch(url + `${courseId}`, {
+            method: "DELETE",
+          });
+          if (response.ok) {
+            fetchCourses();
+          } else {
+            console.error("Error deleting course", response.statusText);
+          }
+        } catch (error) {
+          console.error("Error deleting course");
+        }
+      }
     }
   });
   fetchCourses();
