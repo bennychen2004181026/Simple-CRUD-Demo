@@ -45,15 +45,16 @@ document.addEventListener("DOMContentLoaded", () => {
       const responseData = await response.json();
       if (responseData.errors) {
         errorContainer.innerHTML = ""; //clear previous errors
+        console.log(responseData.errors)
         for (const field in responseData.errors) {
-          const errorText = responseData.errors(field);
+          const errorText = responseData.errors[field];
           const errorElement = document.createElement("p");
           errorElement.textContent = errorText;
           errorContainer.appendChild(errorElement);
         }
       }
     } catch (error) {
-      console.error("Error adding course", response);
+      // console.error("Error adding course", response);
     }
   });
   fetchCourses();
